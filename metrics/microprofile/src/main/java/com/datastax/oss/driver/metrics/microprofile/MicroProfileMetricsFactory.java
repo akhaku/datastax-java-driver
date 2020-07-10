@@ -19,6 +19,7 @@ import com.datastax.dse.driver.api.core.metrics.DseNodeMetric;
 import com.datastax.dse.driver.api.core.metrics.DseSessionMetric;
 import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
+import com.datastax.oss.driver.api.core.context.DriverContext;
 import com.datastax.oss.driver.api.core.metadata.Node;
 import com.datastax.oss.driver.api.core.metrics.DefaultNodeMetric;
 import com.datastax.oss.driver.api.core.metrics.DefaultSessionMetric;
@@ -52,9 +53,9 @@ public class MicroProfileMetricsFactory implements MetricsFactory {
   private final MetricRegistry registry;
   private final SessionMetricUpdater sessionUpdater;
 
-  public MicroProfileMetricsFactory(InternalDriverContext context) {
+  public MicroProfileMetricsFactory(DriverContext context) {
     this.logPrefix = context.getSessionName();
-    this.context = context;
+    this.context = (InternalDriverContext) context;
 
     DriverExecutionProfile config = context.getConfig().getDefaultProfile();
     Set<SessionMetric> enabledSessionMetrics =
@@ -69,7 +70,7 @@ public class MicroProfileMetricsFactory implements MetricsFactory {
     } else {
       this.registry = new MetricsRegistryImpl();
       this.sessionUpdater =
-          new MicroProfileSessionMetricUpdater(enabledSessionMetrics, registry, context);
+          new MicroProfileSessionMetricUpdater(enabledSessionMetrics, registry, this.context);
     }
   }
 

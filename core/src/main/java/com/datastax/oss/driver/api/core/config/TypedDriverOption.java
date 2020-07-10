@@ -700,6 +700,13 @@ public class TypedDriverOption<ValueT> {
   public static final TypedDriverOption<Duration> METRICS_NODE_GRAPH_MESSAGES_INTERVAL =
       new TypedDriverOption<>(
           DseDriverOption.METRICS_NODE_GRAPH_MESSAGES_INTERVAL, GenericType.DURATION);
+  /** The fully-qualified classname of the desired MetricsFactory implementation. */
+  public static final TypedDriverOption<String> METRICS_FACTORY_CLASS =
+      new TypedDriverOption<>(DefaultDriverOption.METRICS_FACTORY_CLASS, GenericType.STRING);
+  /** The fully-qualified classname of the desired metrics registry implementation. */
+  public static final TypedDriverOption<String> METRICS_FACTORY_REGISTRY_CLASS =
+      new TypedDriverOption<>(
+          DefaultDriverOption.METRICS_FACTORY_REGISTRY_CLASS, GenericType.STRING);
 
   private static Iterable<TypedDriverOption<?>> introspectBuiltInValues() {
     try {

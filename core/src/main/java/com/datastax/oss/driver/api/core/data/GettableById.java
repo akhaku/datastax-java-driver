@@ -196,6 +196,11 @@ public interface GettableById extends GettableByIndex, AccessibleById {
     return getBoolean(firstIndexOf(id));
   }
 
+  /** An alias for {@link #getBoolean(CqlIdentifier)} (for smoother transition from driver 3). */
+  default boolean getBool(@NonNull CqlIdentifier id) {
+    return getBoolean(id);
+  }
+
   /**
    * Returns the value for the first occurrence of {@code id} as a Java primitive byte.
    *

@@ -196,6 +196,11 @@ public interface GettableByName extends GettableByIndex, AccessibleByName {
     return getBoolean(firstIndexOf(name));
   }
 
+  /** An alias for {@link #getBoolean(String)} (for smoother transition from driver 3). */
+  default boolean getBool(@NonNull String name) {
+    return getBoolean(name);
+  }
+
   /**
    * Returns the value for the first occurrence of {@code name} as a Java primitive byte.
    *

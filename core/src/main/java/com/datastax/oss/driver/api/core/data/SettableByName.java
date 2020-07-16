@@ -165,6 +165,13 @@ public interface SettableByName<SelfT extends SettableByName<SelfT>>
     return setBoolean(firstIndexOf(name), v);
   }
 
+  /** An alias for {@link #setBoolean(String, boolean)} (for smoother transition from driver 3). */
+  @NonNull
+  @CheckReturnValue
+  default SelfT setBool(@NonNull String name, boolean v) {
+    return setBoolean(name, v);
+  }
+
   /**
    * Sets the value for the first occurrence of {@code name} to the provided Java primitive byte.
    *

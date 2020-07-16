@@ -153,6 +153,13 @@ public interface SettableByIndex<SelfT extends SettableByIndex<SelfT>> extends A
         : set(i, v, codec);
   }
 
+  /** An alias for {@link #setBoolean(int, boolean)} (for smoother transition from driver 3). */
+  @NonNull
+  @CheckReturnValue
+  default SelfT setBool(int i, boolean v) {
+    return setBoolean(i, v);
+  }
+
   /**
    * Sets the {@code i}th value to the provided Java primitive byte.
    *

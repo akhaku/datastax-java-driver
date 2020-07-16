@@ -175,6 +175,11 @@ public interface GettableByIndex extends AccessibleByIndex {
     }
   }
 
+  /** An alias for {@link #getBoolean(int)} (for smoother transition from driver 3). */
+  default boolean getBool(int i) {
+    return getBoolean(i);
+  }
+
   /**
    * Returns the {@code i}th value as a Java primitive byte.
    *

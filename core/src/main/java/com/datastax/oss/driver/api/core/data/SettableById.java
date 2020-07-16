@@ -166,6 +166,16 @@ public interface SettableById<SelfT extends SettableById<SelfT>>
   }
 
   /**
+   * An alias for {@link #setBoolean(CqlIdentifier, boolean)} (for smoother transition from driver
+   * 3).
+   */
+  @NonNull
+  @CheckReturnValue
+  default SelfT setBool(@NonNull CqlIdentifier id, boolean v) {
+    return setBoolean(id, v);
+  }
+
+  /**
    * Sets the value for the first occurrence of {@code id} to the provided Java primitive byte.
    *
    * <p>By default, this works with CQL type {@code tinyint}.

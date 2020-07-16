@@ -4,6 +4,7 @@
 
 ### 4.8.0 (in progress)
 
+- [improvement] JAVA-2811: Provide method aliases from smoother transition from driver 3
 - [new feature] JAVA-2691: Provide driver 4 support for extra codecs
 - [improvement] Allow injection of CodecRegistry on session builder
 - [improvement] JAVA-2828: Add safe paging state wrapper

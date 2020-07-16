@@ -355,6 +355,11 @@ public interface Statement<SelfT extends Statement<SelfT>> extends Request {
    */
   int getPageSize();
 
+  /** An alias for {@link #getPageSize()} (for smoother transition from driver 3). */
+  default int getFetchSize() {
+    return getPageSize();
+  }
+
   /**
    * Configures how many rows will be retrieved simultaneously in a single network roundtrip (the
    * goal being to avoid loading too many results in memory at the same time).
@@ -366,6 +371,13 @@ public interface Statement<SelfT extends Statement<SelfT>> extends Request {
   @NonNull
   @CheckReturnValue
   SelfT setPageSize(int newPageSize);
+
+  /** An alias for {@link #setPageSize(int)} (for smoother transition from driver 3). */
+  @NonNull
+  @CheckReturnValue
+  default SelfT setFetchSize(int newPageSize) {
+    return setPageSize(newPageSize);
+  }
 
   /**
    * Returns the {@link ConsistencyLevel} to use for the statement.

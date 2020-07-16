@@ -207,6 +207,12 @@ public abstract class StatementBuilder<
     return self;
   }
 
+  /** An alias for {@link #setPageSize(int)} (for smoother transition from driver 3). */
+  @NonNull
+  public SelfT setFetchSize(int pageSize) {
+    return this.setPageSize(pageSize);
+  }
+
   /** @see Statement#setConsistencyLevel(ConsistencyLevel) */
   @NonNull
   public SelfT setConsistencyLevel(@Nullable ConsistencyLevel consistencyLevel) {

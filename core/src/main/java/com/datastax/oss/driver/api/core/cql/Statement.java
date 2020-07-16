@@ -233,6 +233,26 @@ public interface Statement<SelfT extends Statement<SelfT>> extends Request {
   SelfT setTracing(boolean newTracing);
 
   /**
+   * An alias for {@link #setTracing(boolean) setTracing(true)} (for smoother transition from driver
+   * 3).
+   */
+  @NonNull
+  @CheckReturnValue
+  default SelfT enableTracing() {
+    return setTracing(true);
+  }
+
+  /**
+   * An alias for {@link #setTracing(boolean) setTracing(false)} (for smoother transition from
+   * driver 3).
+   */
+  @NonNull
+  @CheckReturnValue
+  default SelfT disableTracing() {
+    return setTracing(false);
+  }
+
+  /**
    * Returns the query timestamp, in microseconds, to send with the statement.
    *
    * <p>If this is equal to {@link #NO_DEFAULT_TIMESTAMP}, the {@link TimestampGenerator} configured

@@ -186,6 +186,24 @@ public abstract class StatementBuilder<
     return self;
   }
 
+  /**
+   * An alias for {@link #setTracing(boolean) setTracing(true)} (for smoother transition from driver
+   * 3).
+   */
+  @NonNull
+  public SelfT enableTracing() {
+    return setTracing(true);
+  }
+
+  /**
+   * An alias for {@link #setTracing(boolean) setTracing(false)} (for smoother transition from
+   * driver 3).
+   */
+  @NonNull
+  public SelfT disableTracing() {
+    return setTracing(false);
+  }
+
   /** @see Statement#setQueryTimestamp(long) */
   @NonNull
   public SelfT setQueryTimestamp(long timestamp) {

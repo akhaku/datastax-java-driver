@@ -193,6 +193,12 @@ public abstract class StatementBuilder<
     return self;
   }
 
+  /** An alias for {@link #setQueryTimestamp(long)} (for smoother transition from driver 3). */
+  @NonNull
+  public SelfT setDefaultTimestamp(long timestamp) {
+    return setQueryTimestamp(timestamp);
+  }
+
   /** @see Statement#setPagingState(ByteBuffer) */
   @NonNull
   public SelfT setPagingState(@Nullable ByteBuffer pagingState) {

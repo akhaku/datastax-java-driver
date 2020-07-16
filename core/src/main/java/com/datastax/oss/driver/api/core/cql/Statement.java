@@ -243,6 +243,11 @@ public interface Statement<SelfT extends Statement<SelfT>> extends Request {
    */
   long getQueryTimestamp();
 
+  /** An alias for {@link #getQueryTimestamp()} (for smoother transition from driver 3). */
+  default long getDefaultTimestamp() {
+    return getQueryTimestamp();
+  }
+
   /**
    * Sets the query timestamp, in microseconds, to send with the statement.
    *
@@ -258,6 +263,13 @@ public interface Statement<SelfT extends Statement<SelfT>> extends Request {
   @NonNull
   @CheckReturnValue
   SelfT setQueryTimestamp(long newTimestamp);
+
+  /** An alias for {@link #setQueryTimestamp(long)} (for smoother transition from driver 3). */
+  @NonNull
+  @CheckReturnValue
+  default SelfT setDefaultTimestamp(long newTimestamp) {
+    return setQueryTimestamp(newTimestamp);
+  }
 
   /**
    * Sets how long to wait for this request to complete. This is a global limit on the duration of a

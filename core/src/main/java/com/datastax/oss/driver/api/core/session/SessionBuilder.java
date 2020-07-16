@@ -305,6 +305,25 @@ public abstract class SessionBuilder<SelfT extends SessionBuilder, SessionT> {
   }
 
   /**
+   * An alias for {@link #withAuthCredentials(String, String)} (for smoother transition from driver
+   * 3).
+   */
+  @NonNull
+  public SelfT withCredentials(@NonNull String username, @NonNull String password) {
+    return withAuthCredentials(username, password);
+  }
+
+  /**
+   * An alias for {@link #withAuthCredentials(String, String,String)} (for smoother transition from
+   * driver 3).
+   */
+  @NonNull
+  public SelfT withCredentials(
+      @NonNull String username, @NonNull String password, @NonNull String authorizationId) {
+    return withAuthCredentials(username, password, authorizationId);
+  }
+
+  /**
    * Registers an SSL engine factory for the session.
    *
    * <p>If the factory is provided programmatically with this method, it overrides the configuration

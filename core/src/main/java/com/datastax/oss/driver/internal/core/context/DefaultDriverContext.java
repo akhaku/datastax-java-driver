@@ -77,6 +77,7 @@ import com.datastax.oss.driver.internal.core.metadata.token.DefaultReplicationSt
 import com.datastax.oss.driver.internal.core.metadata.token.DefaultTokenFactoryRegistry;
 import com.datastax.oss.driver.internal.core.metadata.token.ReplicationStrategyFactory;
 import com.datastax.oss.driver.internal.core.metadata.token.TokenFactoryRegistry;
+import com.datastax.oss.driver.internal.core.metrics.DropwizardMetricsFactory;
 import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
 import com.datastax.oss.driver.internal.core.pool.ChannelPoolFactory;
 import com.datastax.oss.driver.internal.core.protocol.ByteBufPrimitiveCodec;
@@ -599,14 +600,7 @@ public class DefaultDriverContext implements InternalDriverContext {
   }
 
   protected MetricsFactory buildMetricsFactory() {
-    return Reflection.buildFromConfig(
-            this, DefaultDriverOption.METRICS_FACTORY_CLASS, MetricsFactory.class)
-        .orElseThrow(
-            () ->
-                new IllegalArgumentException(
-                    String.format(
-                        "Missing metrics factory, check your config (%s)",
-                        DefaultDriverOption.METRICS_FACTORY_CLASS)));
+    return new DropwizardMetricsFactory(this);
   }
 
   protected RequestThrottler buildRequestThrottler() {

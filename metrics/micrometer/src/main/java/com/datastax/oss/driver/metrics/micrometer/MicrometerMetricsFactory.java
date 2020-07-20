@@ -32,7 +32,6 @@ import com.datastax.oss.driver.internal.core.metrics.NoopNodeMetricUpdater;
 import com.datastax.oss.driver.internal.core.metrics.NoopSessionMetricUpdater;
 import com.datastax.oss.driver.internal.core.metrics.SessionMetricUpdater;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Metrics;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -53,7 +52,7 @@ public class MicrometerMetricsFactory implements MetricsFactory {
   private final MeterRegistry registry;
   private final SessionMetricUpdater sessionUpdater;
 
-  public MicrometerMetricsFactory(DriverContext context) {
+  public MicrometerMetricsFactory(DriverContext context, MeterRegistry registry) {
     this.logPrefix = context.getSessionName();
     this.context = (InternalDriverContext) context;
 
@@ -68,9 +67,9 @@ public class MicrometerMetricsFactory implements MetricsFactory {
       this.registry = null;
       this.sessionUpdater = NoopSessionMetricUpdater.INSTANCE;
     } else {
-      this.registry = Metrics.globalRegistry;
+      this.registry = registry;
       this.sessionUpdater =
-          new MicrometerSessionMetricUpdater(enabledSessionMetrics, registry, this.context);
+          new MicrometerSessionMetricUpdater(enabledSessionMetrics, this.registry, this.context);
     }
   }
 

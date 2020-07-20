@@ -808,13 +808,6 @@ public enum DefaultDriverOption implements DriverOption {
    * <p>Value-type: int
    */
   SESSION_LEAK_THRESHOLD("advanced.session-leak.threshold"),
-
-  /**
-   * The fully-qualified classname of the desired MetricsFactory implementation.
-   *
-   * <p>Value-type: {@link String}
-   */
-  METRICS_FACTORY_CLASS("advanced.metrics.factory.class"),
   ;
 
   private final String path;

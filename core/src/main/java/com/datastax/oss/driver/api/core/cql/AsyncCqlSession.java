@@ -47,6 +47,23 @@ public interface AsyncCqlSession extends Session {
    * generally before the result is available).
    *
    * <p>This is an alias for {@link #executeAsync(Statement)}
+   * executeAsync(statementBuilder.build())}.
+   *
+   * @param statementBuilder the builder that will produce the CQL query to execute.
+   * @return a {@code CompletionStage} that, once complete, will produce the async result set.
+   * @see SimpleStatement#newInstance(String)
+   */
+  @NonNull
+  default CompletionStage<AsyncResultSet> executeAsync(
+      @NonNull StatementBuilder<?, ?> statementBuilder) {
+    return executeAsync(statementBuilder.build());
+  }
+
+  /**
+   * Executes a CQL statement asynchronously (the call returns as soon as the statement was sent,
+   * generally before the result is available).
+   *
+   * <p>This is an alias for {@link #executeAsync(Statement)}
    * executeAsync(SimpleStatement.newInstance(query))}.
    *
    * @param query the CQL query to execute.
@@ -115,6 +132,25 @@ public interface AsyncCqlSession extends Session {
     return Objects.requireNonNull(
         execute(new DefaultPrepareRequest(statement), PrepareRequest.ASYNC),
         "The CQL prepare processor should never return a null result");
+  }
+
+  /**
+   * Prepares a CQL statement asynchronously (the call returns as soon as the prepare query was
+   * sent, generally before the statement is prepared).
+   *
+   * <p>This is a shortcut for {@link #prepareAsync(SimpleStatement)
+   * prepareAsync(statementBuilder.build())}.
+   *
+   * <p>The result of this method is cached (see {@link SyncCqlSession#prepare(SimpleStatement)} for
+   * more explanations).
+   *
+   * @param statementBuilder the builder that will produce the CQL query to execute.
+   * @return a {@code CompletionStage} that, once complete, will produce the prepared statement.
+   */
+  @NonNull
+  default CompletionStage<PreparedStatement> prepareAsync(
+      @NonNull SimpleStatementBuilder statementBuilder) {
+    return prepareAsync(statementBuilder.build());
   }
 
   /**

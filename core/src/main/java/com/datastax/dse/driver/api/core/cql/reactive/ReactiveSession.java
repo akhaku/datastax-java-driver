@@ -18,6 +18,7 @@ package com.datastax.dse.driver.api.core.cql.reactive;
 import com.datastax.dse.driver.internal.core.cql.reactive.CqlRequestReactiveProcessor;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.core.cql.Statement;
+import com.datastax.oss.driver.api.core.cql.StatementBuilder;
 import com.datastax.oss.driver.api.core.session.Session;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Map;
@@ -100,5 +101,20 @@ public interface ReactiveSession extends Session {
   default ReactiveResultSet executeReactive(@NonNull Statement<?> statement) {
     return Objects.requireNonNull(
         execute(statement, CqlRequestReactiveProcessor.REACTIVE_RESULT_SET));
+  }
+
+  /**
+   * Returns a {@link Publisher} that, once subscribed to, executes the given query and emits all
+   * the results.
+   *
+   * <p>This is an alias for {@link #executeReactive(Statement)}
+   * executeReactive(statementBuilder.build())}.
+   *
+   * @param statementBuilder the builder that will produce the CQL query to execute.
+   * @return The {@link Publisher} that will publish the returned results.
+   */
+  @NonNull
+  default ReactiveResultSet executeReactive(@NonNull StatementBuilder<?, ?> statementBuilder) {
+    return executeReactive(statementBuilder.build());
   }
 }

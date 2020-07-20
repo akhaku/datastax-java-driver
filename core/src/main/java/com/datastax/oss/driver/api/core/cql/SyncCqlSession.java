@@ -58,6 +58,29 @@ public interface SyncCqlSession extends Session {
    * Executes a CQL statement synchronously (the calling thread blocks until the result becomes
    * available).
    *
+   * <p>This is an alias for {@link #execute(Statement) execute(statementBuilder.build())}.
+   *
+   * @param statementBuilder the builder that will produce the CQL query to execute.
+   * @return the result of the query. That result will never be null but can be empty (and will be
+   *     for any non SELECT query).
+   * @throws AllNodesFailedException if no host in the cluster can be contacted successfully to
+   *     execute this query.
+   * @throws QueryExecutionException if the query triggered an execution exception, i.e. an
+   *     exception thrown by Cassandra when it cannot execute the query with the requested
+   *     consistency level successfully.
+   * @throws QueryValidationException if the query if invalid (syntax error, unauthorized or any
+   *     other validation problem).
+   * @see SimpleStatement#newInstance(String)
+   */
+  @NonNull
+  default ResultSet execute(@NonNull StatementBuilder<?, ?> statementBuilder) {
+    return execute(statementBuilder.build());
+  }
+
+  /**
+   * Executes a CQL statement synchronously (the calling thread blocks until the result becomes
+   * available).
+   *
    * <p>This is an alias for {@link #execute(Statement)
    * execute(SimpleStatement.newInstance(query))}.
    *
@@ -205,6 +228,24 @@ public interface SyncCqlSession extends Session {
     return Objects.requireNonNull(
         execute(new DefaultPrepareRequest(statement), PrepareRequest.SYNC),
         "The CQL prepare processor should never return a null result");
+  }
+
+  /**
+   * Prepares a CQL statement synchronously (the calling thread blocks until the statement is
+   * prepared).
+   *
+   * <p>This is a shortcut for {@link #prepare(SimpleStatement) prepare(statementBuilder.build())}.
+   *
+   * <p>The result of this method is cached (see {@link #prepare(SimpleStatement)} for more
+   * explanations).
+   *
+   * @param statementBuilder the builder that will produce the CQL query to execute.
+   * @return the prepared statement corresponding to {@code query}.
+   * @throws SyntaxError if the syntax of the query to prepare is not correct.
+   */
+  @NonNull
+  default PreparedStatement prepare(@NonNull SimpleStatementBuilder statementBuilder) {
+    return prepare(statementBuilder.build());
   }
 
   /**

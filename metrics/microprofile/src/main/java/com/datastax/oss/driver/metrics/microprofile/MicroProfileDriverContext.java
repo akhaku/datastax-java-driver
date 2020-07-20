@@ -13,29 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.datastax.oss.driver.metrics.micrometer.internal.context;
+package com.datastax.oss.driver.metrics.microprofile;
 
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.core.session.ProgrammaticArguments;
 import com.datastax.oss.driver.internal.core.context.DefaultDriverContext;
 import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
-import com.datastax.oss.driver.metrics.micrometer.MicrometerMetricsFactory;
-import io.micrometer.core.instrument.MeterRegistry;
+import org.eclipse.microprofile.metrics.MetricRegistry;
 
-public class MicrometerDriverContext extends DefaultDriverContext {
+public class MicroProfileDriverContext extends DefaultDriverContext {
 
-  private final MeterRegistry registry;
+  private final MetricRegistry registry;
 
-  public MicrometerDriverContext(
+  public MicroProfileDriverContext(
       DriverConfigLoader configLoader,
       ProgrammaticArguments programmaticArguments,
-      MeterRegistry registry) {
+      MetricRegistry registry) {
     super(configLoader, programmaticArguments);
     this.registry = registry;
   }
 
   @Override
   protected MetricsFactory buildMetricsFactory() {
-    return new MicrometerMetricsFactory(this, registry);
+    return new MicroProfileMetricsFactory(this, registry);
   }
 }

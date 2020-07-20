@@ -16,14 +16,15 @@
 package com.datastax.oss.driver.metrics.microprofile;
 
 import com.datastax.dse.driver.api.core.metrics.DseSessionMetric;
+import com.datastax.oss.driver.api.core.context.DriverContext;
 import com.datastax.oss.driver.api.core.metadata.Node;
 import com.datastax.oss.driver.api.core.metrics.DefaultSessionMetric;
 import com.datastax.oss.driver.api.core.metrics.SessionMetric;
+import com.datastax.oss.driver.api.core.metrics.SessionMetricUpdater;
 import com.datastax.oss.driver.api.core.session.throttling.RequestThrottler;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
 import com.datastax.oss.driver.internal.core.cql.CqlPrepareAsyncProcessor;
 import com.datastax.oss.driver.internal.core.cql.CqlPrepareSyncProcessor;
-import com.datastax.oss.driver.internal.core.metrics.SessionMetricUpdater;
 import com.datastax.oss.driver.internal.core.session.RequestProcessor;
 import com.datastax.oss.driver.internal.core.session.throttling.ConcurrencyLimitingRequestThrottler;
 import com.datastax.oss.driver.internal.core.session.throttling.RateLimitingRequestThrottler;
@@ -43,10 +44,10 @@ public class MicroProfileSessionMetricUpdater extends MicroProfileMetricUpdater<
   private final String metricNamePrefix;
 
   public MicroProfileSessionMetricUpdater(
-      Set<SessionMetric> enabledMetrics, MetricRegistry registry, InternalDriverContext context) {
+      Set<SessionMetric> enabledMetrics, MetricRegistry registry, DriverContext driverContext) {
     super(enabledMetrics, registry);
-    this.metricNamePrefix = context.getSessionName() + ".";
-
+    InternalDriverContext context = (InternalDriverContext) driverContext;
+    this.metricNamePrefix = driverContext.getSessionName() + ".";
     if (enabledMetrics.contains(DefaultSessionMetric.CONNECTED_NODES)) {
       this.registry.register(
           buildFullName(DefaultSessionMetric.CONNECTED_NODES, null),

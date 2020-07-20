@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.datastax.oss.driver.internal.core.metrics;
+package com.datastax.oss.driver.api.core.metrics;
 
 import java.util.concurrent.TimeUnit;
 

@@ -16,6 +16,7 @@
 package com.datastax.oss.driver.internal.core.metrics;
 
 import com.datastax.oss.driver.api.core.metrics.SessionMetric;
+import com.datastax.oss.driver.api.core.metrics.SessionMetricUpdater;
 import java.util.concurrent.TimeUnit;
 import net.jcip.annotations.ThreadSafe;
 

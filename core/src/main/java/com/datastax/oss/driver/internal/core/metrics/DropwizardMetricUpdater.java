@@ -20,6 +20,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
 import com.datastax.oss.driver.api.core.config.DriverOption;
+import com.datastax.oss.driver.api.core.metrics.MetricUpdater;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;

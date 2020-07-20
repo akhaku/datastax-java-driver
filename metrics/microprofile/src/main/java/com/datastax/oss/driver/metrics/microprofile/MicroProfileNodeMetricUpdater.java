@@ -17,12 +17,13 @@ package com.datastax.oss.driver.metrics.microprofile;
 
 import com.datastax.dse.driver.api.core.metrics.DseNodeMetric;
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
+import com.datastax.oss.driver.api.core.context.DriverContext;
 import com.datastax.oss.driver.api.core.metadata.EndPoint;
 import com.datastax.oss.driver.api.core.metadata.Node;
 import com.datastax.oss.driver.api.core.metrics.DefaultNodeMetric;
 import com.datastax.oss.driver.api.core.metrics.NodeMetric;
+import com.datastax.oss.driver.api.core.metrics.NodeMetricUpdater;
 import com.datastax.oss.driver.internal.core.context.InternalDriverContext;
-import com.datastax.oss.driver.internal.core.metrics.NodeMetricUpdater;
 import com.datastax.oss.driver.internal.core.pool.ChannelPool;
 import java.util.Set;
 import java.util.function.Function;
@@ -38,11 +39,12 @@ public class MicroProfileNodeMetricUpdater extends MicroProfileMetricUpdater<Nod
       Node node,
       Set<NodeMetric> enabledMetrics,
       MetricRegistry registry,
-      InternalDriverContext context) {
+      DriverContext driverContext) {
     super(enabledMetrics, registry);
-    this.metricNamePrefix = buildPrefix(context.getSessionName(), node.getEndPoint());
+    InternalDriverContext context = (InternalDriverContext) driverContext;
+    this.metricNamePrefix = buildPrefix(driverContext.getSessionName(), node.getEndPoint());
 
-    DriverExecutionProfile config = context.getConfig().getDefaultProfile();
+    DriverExecutionProfile config = driverContext.getConfig().getDefaultProfile();
 
     if (enabledMetrics.contains(DefaultNodeMetric.OPEN_CONNECTIONS)) {
       this.registry.register(
@@ -76,7 +78,7 @@ public class MicroProfileNodeMetricUpdater extends MicroProfileMetricUpdater<Nod
     initializeDefaultCounter(DefaultNodeMetric.SPECULATIVE_EXECUTIONS, null);
     initializeDefaultCounter(DefaultNodeMetric.CONNECTION_INIT_ERRORS, null);
     initializeDefaultCounter(DefaultNodeMetric.AUTHENTICATION_ERRORS, null);
-    initializeTimer(DseNodeMetric.GRAPH_MESSAGES, context.getConfig().getDefaultProfile());
+    initializeTimer(DseNodeMetric.GRAPH_MESSAGES, driverContext.getConfig().getDefaultProfile());
   }
 
   @Override

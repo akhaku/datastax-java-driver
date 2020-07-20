@@ -20,6 +20,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.datastax.oss.driver.api.core.metadata.Node;
 import com.datastax.oss.driver.api.core.metrics.Metrics;
 import com.datastax.oss.driver.api.core.metrics.NodeMetric;
+import com.datastax.oss.driver.api.core.metrics.NodeMetricUpdater;
 import com.datastax.oss.driver.api.core.metrics.SessionMetric;
 import com.datastax.oss.driver.internal.core.metadata.DefaultNode;
 import edu.umd.cs.findbugs.annotations.NonNull;

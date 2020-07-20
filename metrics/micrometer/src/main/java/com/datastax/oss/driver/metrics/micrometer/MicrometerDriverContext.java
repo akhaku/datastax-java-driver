@@ -16,11 +16,13 @@
 package com.datastax.oss.driver.metrics.micrometer;
 
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
+import com.datastax.oss.driver.api.core.context.DriverContext;
+import com.datastax.oss.driver.api.core.metrics.MetricsFactory;
 import com.datastax.oss.driver.api.core.session.ProgrammaticArguments;
 import com.datastax.oss.driver.internal.core.context.DefaultDriverContext;
-import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
 import io.micrometer.core.instrument.MeterRegistry;
 
+/** Implementation of {@link DriverContext} that provides for a Micrometer {@link MeterRegistry}. */
 public class MicrometerDriverContext extends DefaultDriverContext {
 
   private final MeterRegistry registry;

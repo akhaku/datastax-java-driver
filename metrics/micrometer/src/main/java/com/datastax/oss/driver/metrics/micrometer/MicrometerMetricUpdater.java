@@ -16,7 +16,7 @@
 package com.datastax.oss.driver.metrics.micrometer;
 
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
-import com.datastax.oss.driver.internal.core.metrics.MetricUpdater;
+import com.datastax.oss.driver.api.core.metrics.MetricUpdater;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;

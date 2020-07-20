@@ -16,6 +16,7 @@
 package com.datastax.oss.driver.internal.core.metrics;
 
 import com.datastax.oss.driver.api.core.metrics.NodeMetric;
+import com.datastax.oss.driver.api.core.metrics.NodeMetricUpdater;
 import java.util.concurrent.TimeUnit;
 import net.jcip.annotations.ThreadSafe;
 

@@ -16,7 +16,7 @@
 package com.datastax.oss.driver.metrics.microprofile;
 
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile;
-import com.datastax.oss.driver.internal.core.metrics.MetricUpdater;
+import com.datastax.oss.driver.api.core.metrics.MetricUpdater;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import net.jcip.annotations.ThreadSafe;

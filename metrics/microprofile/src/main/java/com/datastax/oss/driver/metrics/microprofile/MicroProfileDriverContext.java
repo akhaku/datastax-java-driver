@@ -16,11 +16,15 @@
 package com.datastax.oss.driver.metrics.microprofile;
 
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
+import com.datastax.oss.driver.api.core.context.DriverContext;
+import com.datastax.oss.driver.api.core.metrics.MetricsFactory;
 import com.datastax.oss.driver.api.core.session.ProgrammaticArguments;
 import com.datastax.oss.driver.internal.core.context.DefaultDriverContext;
-import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 
+/**
+ * Implementation of {@link DriverContext} that provides for a Micrometer {@link MetricRegistry}.
+ */
 public class MicroProfileDriverContext extends DefaultDriverContext {
 
   private final MetricRegistry registry;

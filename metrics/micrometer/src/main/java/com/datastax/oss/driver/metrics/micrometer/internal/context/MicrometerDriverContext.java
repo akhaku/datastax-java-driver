@@ -22,11 +22,11 @@ import com.datastax.oss.driver.internal.core.metrics.MetricsFactory;
 import com.datastax.oss.driver.metrics.micrometer.MicrometerMetricsFactory;
 import io.micrometer.core.instrument.MeterRegistry;
 
-public class MicrometeDriverContext extends DefaultDriverContext {
+public class MicrometerDriverContext extends DefaultDriverContext {
 
   private final MeterRegistry registry;
 
-  public MicrometeDriverContext(
+  public MicrometerDriverContext(
       DriverConfigLoader configLoader,
       ProgrammaticArguments programmaticArguments,
       MeterRegistry registry) {

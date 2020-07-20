@@ -33,12 +33,12 @@
     <module>mapper-runtime</module>
     <module>mapper-processor</module>
     <module>test-infra</module>
+    <module>metrics/micrometer</module>
+    <module>metrics/microprofile</module>
     <module>integration-tests</module>
     <module>osgi-tests</module>
     <module>distribution</module>
     <module>examples</module>
-    <module>metrics/micrometer</module>
-    <module>metrics/microprofile</module>
     <module>bom</module>
   </modules>
   <properties>

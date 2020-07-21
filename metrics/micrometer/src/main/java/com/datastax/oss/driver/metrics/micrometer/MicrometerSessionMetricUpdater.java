@@ -32,6 +32,7 @@ import com.datastax.oss.driver.shaded.guava.common.cache.Cache;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,10 +50,30 @@ public class MicrometerSessionMetricUpdater extends MicrometerMetricUpdater<Sess
     this.metricNamePrefix = context.getSessionName() + ".";
 
     if (enabledMetrics.contains(DefaultSessionMetric.CONNECTED_NODES)) {
-      this.registry.gauge(
-          buildFullName(DefaultSessionMetric.CONNECTED_NODES, null),
-          context,
-          c -> {
+      registerConnectedNodeGauge(context);
+    }
+    if (enabledMetrics.contains(DefaultSessionMetric.THROTTLING_QUEUE_SIZE)) {
+      registerThrottlingQueueGauge(context);
+    }
+    if (enabledMetrics.contains(DefaultSessionMetric.CQL_PREPARED_CACHE_SIZE)) {
+      registerPreparedCacheGauge(context);
+    }
+    initializeTimer(DefaultSessionMetric.CQL_REQUESTS, context.getConfig().getDefaultProfile());
+    initializeDefaultCounter(DefaultSessionMetric.CQL_CLIENT_TIMEOUTS, null);
+    initializeTimer(DefaultSessionMetric.THROTTLING_DELAY, context.getConfig().getDefaultProfile());
+    initializeDefaultCounter(DefaultSessionMetric.THROTTLING_ERRORS, null);
+    initializeTimer(
+        DseSessionMetric.CONTINUOUS_CQL_REQUESTS, context.getConfig().getDefaultProfile());
+    initializeDefaultCounter(DseSessionMetric.GRAPH_CLIENT_TIMEOUTS, null);
+    initializeTimer(DseSessionMetric.GRAPH_REQUESTS, context.getConfig().getDefaultProfile());
+  }
+
+  private void registerConnectedNodeGauge(InternalDriverContext context) {
+    final String metricName = buildFullName(DefaultSessionMetric.CONNECTED_NODES, null);
+    ToDoubleFunction<InternalDriverContext> fn =
+        new ToDoubleFunction<InternalDriverContext>() {
+          @Override
+          public double applyAsDouble(InternalDriverContext c) {
             int count = 0;
             for (Node node : c.getMetadataManager().getMetadata().getNodes().values()) {
               if (node.getOpenConnections() > 0) {
@@ -60,13 +81,17 @@ public class MicrometerSessionMetricUpdater extends MicrometerMetricUpdater<Sess
               }
             }
             return count;
-          });
-    }
-    if (enabledMetrics.contains(DefaultSessionMetric.THROTTLING_QUEUE_SIZE)) {
-      this.registry.gauge(
-          buildFullName(DefaultSessionMetric.THROTTLING_QUEUE_SIZE, null),
-          context,
-          c -> {
+          }
+        };
+    this.registry.gauge(metricName, context, fn);
+  }
+
+  private void registerThrottlingQueueGauge(InternalDriverContext context) {
+    final String metricName = buildFullName(DefaultSessionMetric.THROTTLING_QUEUE_SIZE, null);
+    ToDoubleFunction<InternalDriverContext> fn =
+        new ToDoubleFunction<InternalDriverContext>() {
+          @Override
+          public double applyAsDouble(InternalDriverContext c) {
             RequestThrottler requestThrottler = c.getRequestThrottler();
             String logPrefix = c.getSessionName();
             if (requestThrottler instanceof ConcurrencyLimitingRequestThrottler) {
@@ -81,13 +106,17 @@ public class MicrometerSessionMetricUpdater extends MicrometerMetricUpdater<Sess
                 DefaultSessionMetric.THROTTLING_QUEUE_SIZE.getPath(),
                 requestThrottler.getClass().getName());
             return 0;
-          });
-    }
-    if (enabledMetrics.contains(DefaultSessionMetric.CQL_PREPARED_CACHE_SIZE)) {
-      this.registry.gauge(
-          buildFullName(DefaultSessionMetric.CQL_PREPARED_CACHE_SIZE, null),
-          context,
-          c -> {
+          }
+        };
+    this.registry.gauge(metricName, context, fn);
+  }
+
+  private void registerPreparedCacheGauge(InternalDriverContext context) {
+    final String metricName = buildFullName(DefaultSessionMetric.CQL_PREPARED_CACHE_SIZE, null);
+    ToDoubleFunction<InternalDriverContext> fn =
+        new ToDoubleFunction<InternalDriverContext>() {
+          @Override
+          public double applyAsDouble(InternalDriverContext c) {
             Cache<?, ?> cache = getPreparedStatementCache(c);
             if (cache == null) {
               LOG.warn(
@@ -99,16 +128,9 @@ public class MicrometerSessionMetricUpdater extends MicrometerMetricUpdater<Sess
               return 0L;
             }
             return cache.size();
-          });
-    }
-    initializeTimer(DefaultSessionMetric.CQL_REQUESTS, context.getConfig().getDefaultProfile());
-    initializeDefaultCounter(DefaultSessionMetric.CQL_CLIENT_TIMEOUTS, null);
-    initializeTimer(DefaultSessionMetric.THROTTLING_DELAY, context.getConfig().getDefaultProfile());
-    initializeDefaultCounter(DefaultSessionMetric.THROTTLING_ERRORS, null);
-    initializeTimer(
-        DseSessionMetric.CONTINUOUS_CQL_REQUESTS, context.getConfig().getDefaultProfile());
-    initializeDefaultCounter(DseSessionMetric.GRAPH_CLIENT_TIMEOUTS, null);
-    initializeTimer(DseSessionMetric.GRAPH_REQUESTS, context.getConfig().getDefaultProfile());
+          }
+        };
+    this.registry.gauge(metricName, context, fn);
   }
 
   @Override
